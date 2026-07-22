@@ -3,37 +3,58 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Graphic Design — David</title>
+  <title>Graphic Design — David Bomhoff</title>
+  <meta name="description" content="Graphic design work by David Bomhoff — branding, packaging, and print.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./css/styles.css">
 </head>
-<body>
-  <main class="wrap" style="position: relative;">
-    <a href="./index.html">&larr; Home</a>
-    <h1>Graphic Design</h1>
-    <p>Two or three sentences about your graphic design practice go here.</p>
-
-    <!-- Floating decorative icons (your Fresco/Illustrator art). Positioned in CSS. -->
-    <img class="float-icon" src="./assets/icons/icon-1.svg" alt="" style="top: 40px; right: 10%;">
-    <img class="float-icon" src="./assets/icons/icon-2.svg" alt="" style="top: 140px; right: 25%;">
-    <!-- alt="" on purpose: decorative images should be silent to screen readers -->
-
-    <div class="filter-bar" role="group" aria-label="Filter work by category">
-      <button class="filter-btn active" data-filter="all">All</button>
-      <button class="filter-btn" data-filter="branding">Branding</button>
-      <button class="filter-btn" data-filter="packaging">Packaging</button>
-      <button class="filter-btn" data-filter="print">Print</button>
-      <button class="filter-btn" data-filter="digital">Digital</button>
+<body class="graphic-page">
+  <header class="graphic-hero">
+    <a class="back-link" href="./index.html">&larr; Home</a>
+    <div class="brand-lockup">
+      <img src="./assets/icons/logo-swirl.svg" alt="" aria-hidden="true">
+      <h1 class="brand-name">
+        <span class="visually-hidden">David Bomhoff</span>
+        <span class="name-avid" aria-hidden="true">avid</span>
+        <span class="name-omhoff" aria-hidden="true">omhoff</span>
+      </h1>
     </div>
+    <!-- Decorative wolf shape — desktop only, see the min-width media query in styles.css -->
+    <div class="graphic-illustration" aria-hidden="true">
+      <img src="./assets/icons/graphic-wolf.svg" alt="">
+    </div>
+  </header>
 
-    <div class="work-grid">
-      <!-- Duplicate this card per project. data-category must match a filter button. -->
-      <a class="card" data-category="branding" href="./graphic-project-1.html">
-        <img src="./assets/gallery/example-2.png" alt="Project name — what it is">
-        <h3>Project name</h3>
-      </a>
+  <main class="graphic-body">
+    <div class="wrap">
+      <!-- Each entry: an illuminated-letter image standing in for the drop-cap first letter,
+           so "D" + "ongle" reads as "Dongle" — alt="D" keeps that meaning for screen readers.
+           Placeholder copy from the Figma file — swap in real project write-ups when ready. -->
+      <ul class="graphic-list">
+        <li class="graphic-item">
+          <img class="dropcap" src="./assets/graphic/letter-d.png" alt="D">
+          <div class="graphic-copy">
+            <h2>ongle</h2>
+            <p>Yeah. I made some things with <span class="hl hl-blue">Elation Properties</span> and a brand for my UX project <span class="hl hl-pink">Boostra</span> as well!</p>
+          </div>
+        </li>
+        <li class="graphic-item">
+          <img class="dropcap" src="./assets/graphic/letter-j.png" alt="J">
+          <div class="graphic-copy">
+            <h2>ongle</h2>
+            <p>Jonleongleopolis. I bongle <span class="hl hl-mint">dongle</span> with the <span class="hl hl-orange">populus</span></p>
+          </div>
+        </li>
+        <li class="graphic-item">
+          <img class="dropcap" src="./assets/graphic/letter-b.png" alt="B">
+          <div class="graphic-copy">
+            <h2>ongle</h2>
+            <p>Jonleongleopolis. I bongle <span class="hl hl-mint">dongle</span> with the <span class="hl hl-orange">populus</span></p>
+          </div>
+        </li>
+      </ul>
     </div>
   </main>
   <script src="./js/main.js"></script>

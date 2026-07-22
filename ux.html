@@ -3,28 +3,46 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UX Design — David</title>
+  <title>UX Design — David Bomhoff</title>
+  <meta name="description" content="UX design work by David Bomhoff.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./css/styles.css">
 </head>
-<body>
-  <main class="wrap">
-    <a href="./index.html">&larr; Home</a>
-    <h1>UX Design</h1>
+<body class="ux-page">
+  <header class="ux-hero">
+    <a class="back-link" href="./index.html">&larr; Home</a>
+    <div class="brand-lockup">
+      <img src="./assets/icons/logo-swirl.svg" alt="" aria-hidden="true">
+      <h1 class="brand-name">
+        <span class="visually-hidden">David Bomhoff</span>
+        <span class="name-avid" aria-hidden="true">avid</span>
+        <span class="name-omhoff" aria-hidden="true">omhoff</span>
+      </h1>
+    </div>
+  </header>
 
-    <div class="phone-row">
-      <!-- Each phone: screenshot inside, whole thing is a link to the case study -->
-      <a class="phone" href="./ux-project-1.html">
-        <img src="./assets/phones/project-1.png" alt="Project 1 — replace with one-line description">
-      </a>
-      <a class="phone" href="./ux-project-2.html">
-        <img src="./assets/phones/project-2.png" alt="Project 2 — replace with one-line description">
-      </a>
-      <a class="phone" href="./ux-project-3.html">
-        <img src="./assets/phones/project-3.png" alt="Project 3 — replace with one-line description">
-      </a>
+  <main class="wrap">
+    <!-- Figma's mobile frame for this page only has a single placeholder block (still unfinished
+         there) — the tablet/desktop frames show these 3 phones on pedestals, so that's the pattern
+         stacked vertically here instead of shipping an empty box on small screens. -->
+    <div class="phone-gallery">
+      <figure class="phone-card">
+        <span class="phone-pedestal" aria-hidden="true"></span>
+        <img class="phone-screen" src="./assets/phones/gophergold.png" alt="GopherGold app — starting screen">
+        <figcaption class="phone-name">GopherGold</figcaption>
+      </figure>
+      <figure class="phone-card phone-card--raised">
+        <span class="phone-pedestal" aria-hidden="true"></span>
+        <img class="phone-screen" src="./assets/phones/byhand.png" alt="&quot;by hand&quot; app — home screen">
+        <figcaption class="phone-name">by hand</figcaption>
+      </figure>
+      <figure class="phone-card">
+        <span class="phone-pedestal" aria-hidden="true"></span>
+        <img class="phone-screen" src="./assets/phones/boostra.png" alt="Boostra app — home screen">
+        <figcaption class="phone-name">Boostra</figcaption>
+      </figure>
     </div>
   </main>
   <script src="./js/main.js"></script>

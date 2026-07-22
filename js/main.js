@@ -1,7 +1,7 @@
 // ============================================================
 // main.js — plain JavaScript, no libraries.
-// Two jobs: (1) homepage hover-swap gallery, (2) graphic page filters.
-// Each block checks if its elements exist, so this one file works on every page.
+// Job: the homepage hover-swap gallery.
+// Checks the elements exist first, so this one file works on every page.
 // ============================================================
 
 // ---------- 1. HOMEPAGE GALLERY ----------
@@ -36,26 +36,5 @@ if (track) {
     btn.addEventListener("focus",      () => setMode(btn.dataset.mode)); // keyboard parity
     btn.addEventListener("mouseleave", () => setMode("all"));
     btn.addEventListener("blur",       () => setMode("all"));
-  });
-}
-
-// ---------- 2. GRAPHIC PAGE FILTERS ----------
-// Cards need: <div class="card" data-category="branding"> ... </div>
-// Buttons need: <button class="filter-btn" data-filter="branding">Branding</button>
-const filterBar = document.querySelector(".filter-bar");
-if (filterBar) {
-  filterBar.addEventListener("click", e => {
-    const btn = e.target.closest(".filter-btn");
-    if (!btn) return;
-
-    // move the "active" style to the clicked button
-    filterBar.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-
-    // show/hide cards by category
-    const filter = btn.dataset.filter; // "all", "branding", "packaging"...
-    document.querySelectorAll(".work-grid .card").forEach(card => {
-      card.classList.toggle("hide", filter !== "all" && card.dataset.category !== filter);
-    });
   });
 }
