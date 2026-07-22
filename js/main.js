@@ -40,10 +40,12 @@ if (track) {
 }
 
 // ---------- 2. DRAGGABLE LOGO ----------
-// The logo's height is normally set by CSS (--logo-reach in styles.css). This lets you
-// grab it and pull it taller or shorter by hand — horizontal movement is ignored on
-// purpose, and letting go springs it back to that CSS height.
-const logo = document.querySelector(".brand-lockup");
+// Only the ring/stem graphic (.logo-drag) is draggable — not the "avid"/"omhoff" text,
+// not the speech bubble, nothing else. Its height is normally set by CSS (--logo-reach
+// on .brand-lockup, the parent it fills). This lets you grab it and pull it taller or
+// shorter by hand — horizontal movement is ignored on purpose, and letting go springs
+// it back to that CSS height.
+const logo = document.querySelector(".logo-drag");
 if (logo) {
   const minHeight = 0.6; // as a fraction of the CSS resting height
   const maxHeight = 1.6;
@@ -51,6 +53,10 @@ if (logo) {
   let startHeight = 0;
   let dragging = false;
 
+  // move/up listen on the document, not on .logo-drag itself — resizing the element
+  // inside its own pointermove handler shifts its hit-test box mid-gesture, which was
+  // triggering a spurious pointercancel (and an early spring-back) partway through a drag.
+  // Tracking from the document sidesteps that entirely.
   logo.addEventListener("pointerdown", e => {
     dragging = true;
     startY = e.clientY;
@@ -58,11 +64,11 @@ if (logo) {
     // drag clears the inline style below, so this never reads a stale dragged value.
     startHeight = logo.getBoundingClientRect().height;
     logo.style.transition = "none";        // instant tracking while dragging
-    logo.setPointerCapture(e.pointerId);    // keep receiving move/up events even off-element
-    logo.classList.add("brand-lockup--dragging");
+    logo.classList.add("logo-drag--dragging");
+    e.preventDefault(); // stops the browser starting its own drag/selection gesture
   });
 
-  logo.addEventListener("pointermove", e => {
+  document.addEventListener("pointermove", e => {
     if (!dragging) return;
     const deltaY = e.clientY - startY; // vertical distance only — e.clientX is never read
     const next = Math.min(startHeight * maxHeight, Math.max(startHeight * minHeight, startHeight + deltaY));
@@ -72,13 +78,13 @@ if (logo) {
   const releaseDrag = () => {
     if (!dragging) return;
     dragging = false;
-    logo.classList.remove("brand-lockup--dragging");
+    logo.classList.remove("logo-drag--dragging");
     // Spring back: a bouncy easing curve overshoots slightly, like letting go of stretched elastic
     logo.style.transition = "height .5s cubic-bezier(0.34, 1.56, 0.64, 1)";
     logo.style.height = ""; // let --logo-reach (CSS) take back over — stays responsive after this
     logo.addEventListener("transitionend", () => { logo.style.transition = ""; }, { once: true });
   };
 
-  logo.addEventListener("pointerup", releaseDrag);
-  logo.addEventListener("pointercancel", releaseDrag);
+  document.addEventListener("pointerup", releaseDrag);
+  document.addEventListener("pointercancel", releaseDrag);
 }

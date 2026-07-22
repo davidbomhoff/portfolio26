@@ -2,6 +2,8 @@
 
 ## About me
 I'm a design student learning to code. I know HTML/CSS/JS basics only — no frameworks, no build tools. My main tools are Adobe Illustrator, Photoshop, Figma, VSCode and Framer (I took an Intro to Programming course where I learned Python as well but I'm pretty rusty)
+I AM THE DESIGNER, YOU ARE THE CODER
+This means that every page should exactly as it appears on Figma & any design decisions are to be made by me.
 ALWAYS explain what you changed and why in plain language after each edit. If you use a concept I might
 not know (e.g. flexbox gap, dataset attributes, event delegation), add one sentence explaining it. Compare to figma and python.
 

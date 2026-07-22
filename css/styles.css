@@ -74,26 +74,32 @@ a { color: inherit; }
 }
 
 /* The name lockup: ring illustration behind, "avid"/"omhoff" text laid over it.
-   Pinned flush to the true top of the page at every screen size (it's the first thing in
-   .hero, which has no top padding) since the vertical strokes in the ring artwork are
-   meant to always touch the top edge.
-   Width and height are set independently instead of with aspect-ratio: the image stretches
-   to fill its box (the default for <img>), so tweaking --logo-reach "pulls" the whole lockup
-   taller or shorter without needing to re-export the SVG from Figma. */
+   The container's own size is fixed (it's what the text below is positioned against) —
+   only the ring/stem image inside it (.logo-drag) is draggable, see main.js. It's pinned
+   flush to the true top of the page at every screen size (it's the first thing in .hero,
+   which has no top padding) since the vertical stems reaching up out of the D and B are
+   meant to always touch the top edge. */
 .brand-lockup {
   --logo-reach: clamp(210px, 24vw, 380px);
   position: relative;
   width: clamp(170px, 20vw, 300px);
   height: var(--logo-reach);
   flex-shrink: 0;
+}
+/* Just the ring/stem graphic — not the "avid"/"omhoff" text — is the draggable part.
+   Positioned absolute so stretching its height pokes past the container instead of
+   resizing it (which would drag the text along too). Default height = 100% = --logo-reach,
+   restored by main.js on release, so tweaking --logo-reach still "pulls" its resting length. */
+.logo-drag {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
   cursor: grab;
   touch-action: none;   /* a touch-drag pulls the logo, not the page, while dragging */
   -webkit-user-select: none; user-select: none; /* dragging shouldn't select nearby text */
 }
 /* Class added/removed by the pointer handlers in main.js while a drag is in progress */
-.brand-lockup--dragging { cursor: grabbing; }
-.brand-lockup > img { width: 100%; height: 100%; }
-.brand-name { position: absolute; inset: 0; margin: 0; }
+.logo-drag--dragging { cursor: grabbing; }
+.brand-name { position: absolute; inset: 0; margin: 0; pointer-events: none; } /* lets drags pass through to .logo-drag underneath instead of hitting this invisible box */
 .name-avid, .name-omhoff {
   position: absolute;
   font-family: var(--font-display);
