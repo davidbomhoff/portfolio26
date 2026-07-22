@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Arcade — David</title>
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body class="arcade-room">
+  <main class="wrap" style="padding-top: var(--space-4); padding-bottom: var(--space-5);">
+    <a href="./index.html" style="color:#EDEAE0;">&larr; Back to daylight</a>
+
+    <!-- The "dying" span is the flickering letter in the neon sign -->
+    <h1 class="neon-sign">THE ARC<span class="dying">A</span>DE</h1>
+    <p>Formerly "The Casino" — renovations ongoing since forever. Three machines still work.</p>
+
+    <!-- CABINET PATTERN: your Illustrator cabinet art is the frame,
+         the game loads in the slot cut into it. Repeat per game. -->
+    <section class="cabinet">
+      <img src="./assets/arcade/cabinet-1.png" alt="">
+      <!-- iframe = a window into another HTML page. Put each game in its own
+           folder (games/game-1/index.html) and it loads right here. -->
+      <iframe src="./games/game-1/index.html" title="Game 1 name" width="400" height="300" loading="lazy"></iframe>
+      <div class="placard">
+        <h3>GAME NAME</h3>
+        <p>Placard text from content/game-placard-worksheet.md goes here.</p>
+      </div>
+    </section>
+
+    <!-- The under-construction gag: one broken cabinet -->
+    <section class="cabinet cabinet--broken">
+      <img src="./assets/arcade/cabinet-4.png" alt="A powered-off arcade cabinet">
+    </section>
+  </main>
+</body>
+</html>

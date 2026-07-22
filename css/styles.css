@@ -1,0 +1,133 @@
+/* ============================================================
+   DESIGN TOKENS — replace every value here with your Figma values
+   (Figma: select a color style, right panel shows the hex)
+   These are CSS variables: define once, reuse everywhere with var(--name)
+   ============================================================ */
+:root {
+  --ink: #1A1B26;        /* main text */
+  --paper: #FAF8F4;      /* page background */
+  --accent: #E8503A;     /* buttons, links, highlights */
+  --dim: #6B6D80;        /* secondary text */
+  --panel: #EFECE5;      /* card backgrounds */
+
+  --font-display: "Your Display Font", sans-serif;  /* headings — match Figma */
+  --font-body: "Your Body Font", sans-serif;        /* paragraphs */
+
+  --space-1: 8px;   /* spacing scale: multiples of 8 like your Figma grid */
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 40px;
+  --space-5: 64px;
+  --max-width: 1200px;
+}
+
+/* ---------- Base ---------- */
+* { box-sizing: border-box; }           /* padding counts inside width — saves headaches */
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--paper);
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+.wrap { max-width: var(--max-width); margin: 0 auto; padding: 0 var(--space-3); }
+
+/* Visible keyboard focus on everything clickable */
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+/* ---------- Homepage: three big buttons ---------- */
+.mode-buttons { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+.mode-btn {
+  flex: 1 1 200px;
+  padding: var(--space-3);
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  background: var(--panel);
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+}
+.mode-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 0 var(--ink); }
+.mode-btn--off { opacity: .55; filter: grayscale(.6); } /* under-construction casino button */
+
+/* ---------- Homepage: scrolling gallery ---------- */
+.gallery-viewport { overflow: hidden; margin-top: var(--space-4); }
+.gallery-track { display: flex; gap: var(--space-3); width: max-content; }
+.gallery-track img {
+  height: 220px; width: auto; border-radius: 8px;
+  transition: opacity .3s;
+}
+.gallery-track img.hidden-item { opacity: .15; } /* dimmed when a button hover filters it out */
+
+@media (prefers-reduced-motion: no-preference) {
+  .gallery-track { animation: scroll 40s linear infinite; }
+  .gallery-viewport:hover .gallery-track { animation-play-state: paused; }
+}
+@keyframes scroll { to { transform: translateX(-50%); } }
+/* main.js duplicates the images once so -50% loops seamlessly */
+
+/* ---------- UX page: phones ---------- */
+.phone-row { display: flex; gap: var(--space-4); justify-content: center; flex-wrap: wrap; perspective: 1000px; }
+.phone {
+  width: 260px; border-radius: 32px; border: 3px solid var(--ink);
+  overflow: hidden; background: var(--ink);
+  transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s;
+}
+.phone:hover, .phone:focus-visible {
+  transform: translateY(-12px) rotateX(4deg) scale(1.03);
+  box-shadow: 0 24px 48px rgba(26,27,38,.25);
+}
+
+/* ---------- Graphic page: filters + floating icons ---------- */
+.filter-bar { display: flex; gap: var(--space-1); flex-wrap: wrap; margin: var(--space-3) 0; }
+.filter-btn {
+  padding: 8px 16px; border: 2px solid var(--ink); border-radius: 999px;
+  background: transparent; cursor: pointer; font-family: var(--font-body);
+}
+.filter-btn.active { background: var(--ink); color: var(--paper); }
+.work-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--space-2); }
+.work-grid .card.hide { display: none; }
+
+.float-icon { position: absolute; width: 72px; }
+@media (prefers-reduced-motion: no-preference) {
+  .float-icon { animation: bob var(--dur, 6s) ease-in-out infinite alternate; }
+  .float-icon:nth-child(2n) { --dur: 7.5s; animation-delay: -2s; }
+  .float-icon:nth-child(3n) { --dur: 9s; animation-delay: -4s; }
+}
+@keyframes bob {
+  from { transform: translate(0,0) rotate(-2deg); }
+  to   { transform: translate(8px,-18px) rotate(3deg); }
+}
+
+/* ---------- Arcade page ---------- */
+.arcade-room { background: #12131C; color: #EDEAE0; min-height: 100vh; position: relative; }
+.arcade-room::after {  /* scanlines over everything */
+  content: ""; position: fixed; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(0,0,0,.18) 0 1px, transparent 1px 3px);
+}
+.neon-sign { font-family: var(--font-display); font-size: 3rem; color: #F2B747; text-shadow: 0 0 16px currentColor; }
+@media (prefers-reduced-motion: no-preference) {
+  .neon-sign .dying { animation: flicker 4s steps(1) infinite; }
+}
+@keyframes flicker {
+  0%, 7%, 10%, 100% { opacity: 1; text-shadow: 0 0 12px currentColor; }
+  8%, 9%, 54%, 56%  { opacity: .15; text-shadow: none; }
+}
+.cabinet { position: relative; }
+.cabinet--broken { filter: grayscale(.8) brightness(.7); }
+.cabinet--broken::before {
+  content: "OUT OF ORDER";
+  position: absolute; top: 40%; left: -5%; right: -5%; z-index: 2;
+  background: repeating-linear-gradient(45deg, #F2B747 0 20px, #12131C 20px 40px);
+  color: #12131C; font-weight: bold; text-align: center; padding: 8px;
+  transform: rotate(-6deg);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+  .mode-buttons { flex-direction: column; }
+  .phone { width: 220px; }
+  .float-icon { position: static; width: 48px; display: inline-block; }
+}

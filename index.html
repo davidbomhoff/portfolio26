@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>David — Designer</title>
+  <meta name="description" content="Portfolio of David — UX design, graphic design, and playable experiments.">
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+  <main class="wrap">
+    <header style="padding: var(--space-5) 0 var(--space-4);">
+      <h1>David</h1>
+      <p>UX + graphic design, with a side of games.</p>
+    </header>
+
+    <!-- data-mode connects each button to the gallery filter in main.js -->
+    <nav class="mode-buttons" aria-label="Portfolio sections">
+      <button class="mode-btn" data-mode="ux" onclick="location.href='./ux.html'">UX DESIGN</button>
+      <button class="mode-btn" data-mode="graphic" onclick="location.href='./graphic.html'">GRAPHIC DESIGN</button>
+      <button class="mode-btn mode-btn--off" data-mode="arcade" onclick="location.href='./arcade.html'">CASINO — UNDER CONSTRUCTION</button>
+    </nav>
+
+    <!-- main.js fills this with your works array, duplicated for a seamless loop -->
+    <div class="gallery-viewport">
+      <div class="gallery-track"></div>
+    </div>
+  </main>
+  <script src="./js/main.js"></script>
+</body>
+</html>

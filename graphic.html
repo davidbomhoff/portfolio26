@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Graphic Design — David</title>
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+  <main class="wrap" style="position: relative;">
+    <a href="./index.html">&larr; Home</a>
+    <h1>Graphic Design</h1>
+    <p>Two or three sentences about your graphic design practice go here.</p>
+
+    <!-- Floating decorative icons (your Fresco/Illustrator art). Positioned in CSS. -->
+    <img class="float-icon" src="./assets/icons/icon-1.svg" alt="" style="top: 40px; right: 10%;">
+    <img class="float-icon" src="./assets/icons/icon-2.svg" alt="" style="top: 140px; right: 25%;">
+    <!-- alt="" on purpose: decorative images should be silent to screen readers -->
+
+    <div class="filter-bar" role="group" aria-label="Filter work by category">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="branding">Branding</button>
+      <button class="filter-btn" data-filter="packaging">Packaging</button>
+      <button class="filter-btn" data-filter="print">Print</button>
+      <button class="filter-btn" data-filter="digital">Digital</button>
+    </div>
+
+    <div class="work-grid">
+      <!-- Duplicate this card per project. data-category must match a filter button. -->
+      <a class="card" data-category="branding" href="./graphic-project-1.html">
+        <img src="./assets/gallery/example-2.png" alt="Project name — what it is">
+        <h3>Project name</h3>
+      </a>
+    </div>
+  </main>
+  <script src="./js/main.js"></script>
+</body>
+</html>
