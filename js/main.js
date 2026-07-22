@@ -1,6 +1,6 @@
 // ============================================================
 // main.js — plain JavaScript, no libraries.
-// Job: the homepage hover-swap gallery.
+// Two jobs: (1) the homepage hover-swap gallery, (2) the draggable logo.
 // Checks the elements exist first, so this one file works on every page.
 // ============================================================
 
@@ -37,4 +37,48 @@ if (track) {
     btn.addEventListener("mouseleave", () => setMode("all"));
     btn.addEventListener("blur",       () => setMode("all"));
   });
+}
+
+// ---------- 2. DRAGGABLE LOGO ----------
+// The logo's height is normally set by CSS (--logo-reach in styles.css). This lets you
+// grab it and pull it taller or shorter by hand — horizontal movement is ignored on
+// purpose, and letting go springs it back to that CSS height.
+const logo = document.querySelector(".brand-lockup");
+if (logo) {
+  const minHeight = 0.6; // as a fraction of the CSS resting height
+  const maxHeight = 1.6;
+  let startY = 0;
+  let startHeight = 0;
+  let dragging = false;
+
+  logo.addEventListener("pointerdown", e => {
+    dragging = true;
+    startY = e.clientY;
+    // Read the height CSS is currently giving it — this only works because a finished
+    // drag clears the inline style below, so this never reads a stale dragged value.
+    startHeight = logo.getBoundingClientRect().height;
+    logo.style.transition = "none";        // instant tracking while dragging
+    logo.setPointerCapture(e.pointerId);    // keep receiving move/up events even off-element
+    logo.classList.add("brand-lockup--dragging");
+  });
+
+  logo.addEventListener("pointermove", e => {
+    if (!dragging) return;
+    const deltaY = e.clientY - startY; // vertical distance only — e.clientX is never read
+    const next = Math.min(startHeight * maxHeight, Math.max(startHeight * minHeight, startHeight + deltaY));
+    logo.style.height = `${next}px`;
+  });
+
+  const releaseDrag = () => {
+    if (!dragging) return;
+    dragging = false;
+    logo.classList.remove("brand-lockup--dragging");
+    // Spring back: a bouncy easing curve overshoots slightly, like letting go of stretched elastic
+    logo.style.transition = "height .5s cubic-bezier(0.34, 1.56, 0.64, 1)";
+    logo.style.height = ""; // let --logo-reach (CSS) take back over — stays responsive after this
+    logo.addEventListener("transitionend", () => { logo.style.transition = ""; }, { once: true });
+  };
+
+  logo.addEventListener("pointerup", releaseDrag);
+  logo.addEventListener("pointercancel", releaseDrag);
 }

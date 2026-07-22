@@ -13,7 +13,7 @@ One CSS file: css/styles.css. One JS file: js/main.js. Multi-page: index/ux/grap
 See :root in css/styles.css. If a value seems missing, ask me for it instead of inventing one.
 
 ## Rules
-- Match my Figma screenshots exactly when I paste them. Ask for measurements if unclear. Constantly let me know if you can access my figma file through the mcp server and help me fix it.
+- Match my Figma screenshots exactly when I paste them. Ask for measurements if unclear. Constantly let me know if you can access my figma file through the mcp server and help me fix it. Make no mistakes in translating my Figma designs pixel perfect to code.
 - Mobile breakpoints: 375 / 768 / 1440. Everything must work at all three.
 - Every image gets alt text. Every clickable thing gets a :focus-visible style.
 - Wrap all animation in @media (prefers-reduced-motion: no-preference).

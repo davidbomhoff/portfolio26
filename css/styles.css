@@ -86,7 +86,12 @@ a { color: inherit; }
   width: clamp(170px, 20vw, 300px);
   height: var(--logo-reach);
   flex-shrink: 0;
+  cursor: grab;
+  touch-action: none;   /* a touch-drag pulls the logo, not the page, while dragging */
+  -webkit-user-select: none; user-select: none; /* dragging shouldn't select nearby text */
 }
+/* Class added/removed by the pointer handlers in main.js while a drag is in progress */
+.brand-lockup--dragging { cursor: grabbing; }
 .brand-lockup > img { width: 100%; height: 100%; }
 .brand-name { position: absolute; inset: 0; margin: 0; }
 .name-avid, .name-omhoff {
