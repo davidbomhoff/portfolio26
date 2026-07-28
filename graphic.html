@@ -12,24 +12,26 @@
 </head>
 <body class="graphic-page">
   <header class="graphic-hero">
-    <div class="page-header-row">
-      <div class="brand-lockup">
-        <img class="logo-drag" src="./assets/icons/logo-swirl.svg" alt="" aria-hidden="true">
-        <h1 class="brand-name">
-          <span class="visually-hidden">David Bomhoff</span>
-          <span class="name-avid" aria-hidden="true">avid</span>
-          <span class="name-omhoff" aria-hidden="true">omhoff</span>
-        </h1>
-      </div>
+    <!-- Site-wide navbar, from Figma's "Frame 10" — centered, near the top, on its own layer
+         so it doesn't push the logo down (that has to stay pinned to the true page top). -->
+    <nav class="site-nav" aria-label="Main">
+      <a class="nav-btn nav-btn--home" href="./index.html">home</a>
+      <a class="nav-btn nav-btn--gdes" href="./graphic.html" aria-current="page">gdes</a>
+      <a class="nav-btn nav-btn--ux" href="./ux.html">ux</a>
+      <a class="nav-btn nav-btn--arcade" href="./arcade.html">arcade</a>
+      <a class="nav-btn nav-btn--about" href="./about.html">about</a>
+    </nav>
 
-      <!-- Site-wide navbar, from the Figma "Frame 10" component -->
-      <nav class="site-nav" aria-label="Main">
-        <a class="nav-btn nav-btn--home" href="./index.html">home</a>
-        <a class="nav-btn nav-btn--gdes" href="./graphic.html" aria-current="page">gdes</a>
-        <a class="nav-btn nav-btn--ux" href="./ux.html">ux</a>
-        <a class="nav-btn nav-btn--arcade" href="./arcade.html">arcade</a>
-        <a class="nav-btn nav-btn--about" href="./about.html">about</a>
-      </nav>
+    <div class="brand-lockup">
+      <!-- The two strings the rings hang from — stretch when you drag, see main.js -->
+      <span class="logo-string logo-string--a" aria-hidden="true"></span>
+      <span class="logo-string logo-string--b" aria-hidden="true"></span>
+      <img class="logo-drag" src="./assets/icons/logo-swirl.svg" alt="" aria-hidden="true">
+      <h1 class="brand-name">
+        <span class="visually-hidden">David Bomhoff</span>
+        <span class="name-avid" aria-hidden="true">avid</span>
+        <span class="name-omhoff" aria-hidden="true">omhoff</span>
+      </h1>
     </div>
     <!-- Decorative wolf shape — desktop only, see the min-width media query in styles.css -->
     <div class="graphic-illustration" aria-hidden="true">

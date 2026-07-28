@@ -6,11 +6,17 @@
 
 // ---------- 1. HOMEPAGE GALLERY ----------
 // Your work goes here. type must be: "ux", "graphic", or "arcade".
+// TODO (flagged, not decided for you): title/type below are guesses from the filenames in
+// assets/home scroll/ — "Asset 1.png" and "Explore Player.png" also exist in assets/BOOSTRA/,
+// so those two are confidently "ux"; the rest are just neutral guesses. Please correct them.
 const works = [
-  { src: "assets/gallery/example-1.png", title: "Example UX project", type: "ux" },
-  { src: "assets/gallery/example-2.png", title: "Example brand work", type: "graphic" },
-  { src: "assets/gallery/example-3.png", title: "Example game art",  type: "arcade" },
-  // add all your pieces here...
+  { src: "assets/home scroll/Adobe Scan Apr 1, 2025.jpg", title: "Scanned print piece", type: "graphic" },
+  { src: "assets/home scroll/Asset 1.png", title: "Boostra app asset", type: "ux" },
+  { src: "assets/home scroll/Asset 4.jpg", title: "Design asset", type: "graphic" },
+  { src: "assets/home scroll/BeerSports-05.png", title: "BeerSports design", type: "graphic" },
+  { src: "assets/home scroll/Explore Player.png", title: "Boostra Explore Player screen", type: "ux" },
+  { src: "assets/home scroll/FATCATSV1-02.png", title: "Fat Cats brand design", type: "graphic" },
+  // add more pieces here...
 ];
 
 const track = document.querySelector(".gallery-track");
@@ -40,30 +46,36 @@ if (track) {
 }
 
 // ---------- 2. DRAGGABLE LOGO ----------
-// Only the ring/stem graphic (.logo-drag) is draggable — not the "avid"/"omhoff" text,
-// not the speech bubble, nothing else. Its height is normally set by CSS (--logo-reach
-// on .brand-lockup, the parent it fills). This lets you grab it and pull it taller or
-// shorter by hand — horizontal movement is ignored on purpose, and letting go springs
-// it back to that CSS height.
+// Grab the ring/stem graphic (.logo-drag) — not the "avid"/"omhoff" text, not the speech
+// bubble — and pull down to mimic pulling on the strings the rings hang from: the two
+// .logo-string bars stretch (from 0 height at rest) and the rings slide down with them,
+// undistorted, instead of the old version which stretched the whole graphic into an oval.
+// Vertical movement only (e.clientX is never read), and letting go springs everything
+// back to rest.
 const logo = document.querySelector(".logo-drag");
-if (logo) {
-  const minHeight = 0.6; // as a fraction of the CSS resting height
-  const maxHeight = 1.6;
+const strings = document.querySelectorAll(".logo-string");
+if (logo && strings.length) {
   let startY = 0;
-  let startHeight = 0;
+  let maxStretch = 0;
+  let stretch = 0; // current string length, 0 at rest
   let dragging = false;
 
-  // move/up listen on the document, not on .logo-drag itself — resizing the element
-  // inside its own pointermove handler shifts its hit-test box mid-gesture, which was
-  // triggering a spurious pointercancel (and an early spring-back) partway through a drag.
-  // Tracking from the document sidesteps that entirely.
+  const setStretch = px => {
+    stretch = px;
+    strings.forEach(s => { s.style.height = `${px}px`; });
+    logo.style.transform = `translateY(${px}px)`;
+  };
+
+  // move/up listen on the document, not on .logo-drag itself — moving the element inside
+  // its own pointermove handler shifts its hit-test box mid-gesture, which was triggering
+  // a spurious pointercancel (and an early spring-back) partway through a drag. Tracking
+  // from the document sidesteps that entirely.
   logo.addEventListener("pointerdown", e => {
     dragging = true;
     startY = e.clientY;
-    // Read the height CSS is currently giving it — this only works because a finished
-    // drag clears the inline style below, so this never reads a stale dragged value.
-    startHeight = logo.getBoundingClientRect().height;
-    logo.style.transition = "none";        // instant tracking while dragging
+    maxStretch = logo.getBoundingClientRect().height * 0.8; // string can grow up to 80% of the rings' own height
+    logo.style.transition = "none";
+    strings.forEach(s => { s.style.transition = "none"; }); // instant tracking while dragging
     logo.classList.add("logo-drag--dragging");
     e.preventDefault(); // stops the browser starting its own drag/selection gesture
   });
@@ -71,8 +83,7 @@ if (logo) {
   document.addEventListener("pointermove", e => {
     if (!dragging) return;
     const deltaY = e.clientY - startY; // vertical distance only — e.clientX is never read
-    const next = Math.min(startHeight * maxHeight, Math.max(startHeight * minHeight, startHeight + deltaY));
-    logo.style.height = `${next}px`;
+    setStretch(Math.min(maxStretch, Math.max(0, deltaY))); // strings only pull longer, never negative
   });
 
   const releaseDrag = () => {
@@ -80,8 +91,10 @@ if (logo) {
     dragging = false;
     logo.classList.remove("logo-drag--dragging");
     // Spring back: a bouncy easing curve overshoots slightly, like letting go of stretched elastic
-    logo.style.transition = "height .5s cubic-bezier(0.34, 1.56, 0.64, 1)";
-    logo.style.height = ""; // let --logo-reach (CSS) take back over — stays responsive after this
+    const spring = "height .5s cubic-bezier(0.34, 1.56, 0.64, 1)";
+    logo.style.transition = spring.replace("height", "transform");
+    strings.forEach(s => { s.style.transition = spring; });
+    setStretch(0);
     logo.addEventListener("transitionend", () => { logo.style.transition = ""; }, { once: true });
   };
 
