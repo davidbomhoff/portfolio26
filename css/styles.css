@@ -162,6 +162,39 @@ a { color: inherit; }
   }
 }
 
+/* ---------- Site nav (matches the "Frame 10" component selected in Figma) ---------- */
+/* Shared by graphic.html/ux.html to sit the logo and the nav side by side, like .hero-top */
+.page-header-row {
+  position: relative; z-index: 1;
+  display: flex; flex-wrap: wrap; align-items: flex-start;
+  gap: var(--space-3) var(--space-4);
+}
+.site-nav { display: flex; flex-wrap: wrap; gap: clamp(10px, 2vw, 21px); }
+.nav-btn {
+  display: flex; align-items: center; justify-content: center;
+  width: clamp(96px, 13vw, 200px);
+  height: clamp(40px, 4.5vw, 50px);
+  border-radius: 30px;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(1rem, 2.2vw, 2.5rem); /* 40px at full size, from Figma */
+  color: var(--ink);
+  text-decoration: none;
+  background: var(--accent);
+}
+.nav-btn--home { background: var(--accent); }
+.nav-btn--gdes { background: var(--graphic); }
+.nav-btn--ux { background: var(--ux); }
+.nav-btn--arcade { background: var(--casino); }
+.nav-btn--about { background: transparent; border: 5px solid var(--gold); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .nav-btn { transition: transform .2s; }
+  .nav-btn--about { transition: background .3s; }
+  .nav-btn:not(.nav-btn--about):hover { transform: scale(1.15); z-index: 1; }
+  .nav-btn--about:hover { background: var(--gold); }
+}
+
 /* ---------- Homepage: three big buttons ---------- */
 .mode-buttons { position: relative; z-index: 1; display: flex; gap: var(--space-4); flex-wrap: wrap; } /* 40px in Figma — was --space-2 (16px), too tight */
 .mode-btn {
@@ -246,8 +279,6 @@ a { color: inherit; }
   position: relative;
   padding: 0 clamp(20px, 4vw, 35px) clamp(20px, 4vw, 35px); /* no top padding — logo pinned flush to page top */
 }
-/* Taken out of normal flow so it floats over the corner instead of pushing the logo down */
-.back-link { position: absolute; z-index: 2; top: var(--space-2); left: clamp(20px, 4vw, 35px); color: var(--ink); }
 .graphic-illustration { display: none; } /* shown again on desktop below */
 
 .graphic-body { padding-bottom: var(--space-5); }

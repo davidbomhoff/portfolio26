@@ -7,19 +7,29 @@
   <meta name="description" content="Graphic design work by David Bomhoff — branding, packaging, and print.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body class="graphic-page">
   <header class="graphic-hero">
-    <a class="back-link" href="./index.html">&larr; Home</a>
-    <div class="brand-lockup">
-      <img class="logo-drag" src="./assets/icons/logo-swirl.svg" alt="" aria-hidden="true">
-      <h1 class="brand-name">
-        <span class="visually-hidden">David Bomhoff</span>
-        <span class="name-avid" aria-hidden="true">avid</span>
-        <span class="name-omhoff" aria-hidden="true">omhoff</span>
-      </h1>
+    <div class="page-header-row">
+      <div class="brand-lockup">
+        <img class="logo-drag" src="./assets/icons/logo-swirl.svg" alt="" aria-hidden="true">
+        <h1 class="brand-name">
+          <span class="visually-hidden">David Bomhoff</span>
+          <span class="name-avid" aria-hidden="true">avid</span>
+          <span class="name-omhoff" aria-hidden="true">omhoff</span>
+        </h1>
+      </div>
+
+      <!-- Site-wide navbar, from the Figma "Frame 10" component -->
+      <nav class="site-nav" aria-label="Main">
+        <a class="nav-btn nav-btn--home" href="./index.html">home</a>
+        <a class="nav-btn nav-btn--gdes" href="./graphic.html" aria-current="page">gdes</a>
+        <a class="nav-btn nav-btn--ux" href="./ux.html">ux</a>
+        <a class="nav-btn nav-btn--arcade" href="./arcade.html">arcade</a>
+        <a class="nav-btn nav-btn--about" href="./about.html">about</a>
+      </nav>
     </div>
     <!-- Decorative wolf shape — desktop only, see the min-width media query in styles.css -->
     <div class="graphic-illustration" aria-hidden="true">

@@ -7,19 +7,29 @@
   <meta name="description" content="UX design work by David Bomhoff.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body class="ux-page">
   <header class="ux-hero">
-    <a class="back-link" href="./index.html">&larr; Home</a>
-    <div class="brand-lockup">
-      <img class="logo-drag" src="./assets/icons/logo-swirl.svg" alt="" aria-hidden="true">
-      <h1 class="brand-name">
-        <span class="visually-hidden">David Bomhoff</span>
-        <span class="name-avid" aria-hidden="true">avid</span>
-        <span class="name-omhoff" aria-hidden="true">omhoff</span>
-      </h1>
+    <div class="page-header-row">
+      <div class="brand-lockup">
+        <img class="logo-drag" src="./assets/icons/logo-swirl.svg" alt="" aria-hidden="true">
+        <h1 class="brand-name">
+          <span class="visually-hidden">David Bomhoff</span>
+          <span class="name-avid" aria-hidden="true">avid</span>
+          <span class="name-omhoff" aria-hidden="true">omhoff</span>
+        </h1>
+      </div>
+
+      <!-- Site-wide navbar, from the Figma "Frame 10" component -->
+      <nav class="site-nav" aria-label="Main">
+        <a class="nav-btn nav-btn--home" href="./index.html">home</a>
+        <a class="nav-btn nav-btn--gdes" href="./graphic.html">gdes</a>
+        <a class="nav-btn nav-btn--ux" href="./ux.html" aria-current="page">ux</a>
+        <a class="nav-btn nav-btn--arcade" href="./arcade.html">arcade</a>
+        <a class="nav-btn nav-btn--about" href="./about.html">about</a>
+      </nav>
     </div>
   </header>
 
