@@ -1,0 +1,399 @@
+/* ============================================================
+   DESIGN TOKENS — replace every value here with your Figma values
+   (Figma: select a color style, right panel shows the hex)
+   These are CSS variables: define once, reuse everywhere with var(--name)
+   ============================================================ */
+:root {
+  --ink: #F0EEE9;         /* main text on the dark background — from Figma button label color */
+  --paper: #301B00;       /* page background — dark brown, from Figma Home/UI frames */
+  --accent: #FF530D;      /* "omhoff" wordmark + focus ring + fox illustration, from Figma */
+  --gold: #FFA000;        /* "avid" wordmark + speech-bubble fill, from Figma */
+  --dim: #6B6D80;         /* PLACEHOLDER — no secondary-text color in the Figma frames yet, ask David */
+  --panel: #EFECE5;       /* PLACEHOLDER — no card-background color in the Figma frames yet, ask David */
+
+  --graphic: #743362;     /* "graphic design" button + Graphic page background, from Figma */
+  --ux: #334A84;          /* "ux design" button + UX page pedestal blocks, from Figma */
+  --casino: #8E101F;      /* "casino" button, from Figma */
+  --tan: #F2D398;         /* homepage gallery pedestal, from Figma */
+
+  --font-display: "Montserrat", sans-serif;  /* headings — matches Figma (SemiBold, 600) */
+  --font-body: "Montserrat", sans-serif;     /* paragraphs */
+
+  --space-1: 8px;   /* spacing scale: multiples of 8 like your Figma grid */
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 40px;
+  --space-5: 64px;
+  --max-width: 1200px;
+}
+
+/* ---------- Base ---------- */
+* { box-sizing: border-box; }           /* padding counts inside width — saves headaches */
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--paper);
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+.wrap { max-width: var(--max-width); margin: 0 auto; padding: 0 var(--space-3); }
+
+/* Visible keyboard focus on everything clickable */
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+/* Screen-reader-only text: visible to assistive tech, invisible on screen.
+   Used for the real "David Bomhoff" heading — the letters D and B are drawn
+   by the ring illustration, not typed, so a screen reader needs this instead. */
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px;
+  margin: -1px; padding: 0; overflow: hidden;
+  clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
+/* ---------- Homepage: hero (matches Figma "Home" frame) ---------- */
+.hero {
+  /* .hero itself has no top padding (see below) — --top-gap is the space that padding used to
+     be, added back individually to everything except the logo, so only the logo sits flush
+     against the true page top and everything else keeps its original position. */
+  --top-gap: clamp(24px, 5vw, 76px);
+  position: relative;
+  background: var(--paper);
+  color: var(--ink);
+  overflow: hidden;
+  padding: 0 clamp(20px, 4vw, 35px) clamp(48px, 8vw, 90px);
+}
+
+.hero-top {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--space-3) var(--space-4);
+}
+
+/* The name lockup: ring illustration behind, "avid"/"omhoff" text laid over it.
+   The container's own size is fixed (it's what the text below is positioned against) —
+   only the ring/stem image inside it (.logo-drag) is draggable, see main.js. It's pinned
+   flush to the true top of the page at every screen size (it's the first thing in .hero,
+   which has no top padding) since the vertical stems reaching up out of the D and B are
+   meant to always touch the top edge.
+   aspect-ratio matches the source SVG's own viewBox (342/418) exactly, so the container
+   and the (undistorted) image inside it always agree on size — no arbitrary height value
+   to keep in sync. Drops into place on page load; see @keyframes logo-drop below. */
+.brand-lockup {
+  position: relative;
+  width: clamp(170px, 20vw, 300px);
+  aspect-ratio: 342 / 418;
+  flex-shrink: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .brand-lockup { animation: logo-drop .9s cubic-bezier(.34, 1.56, .64, 1) both; }
+}
+@keyframes logo-drop { from { transform: translateY(-130%); } to { transform: translateY(0); } }
+
+/* The two straight "strings" the rings hang from — plain rectangles, not part of the SVG,
+   so they can stretch independently without distorting the rings into ovals. Zero height
+   at rest (invisible); main.js grows them and shifts .logo-rings down by the same amount
+   while dragging, then springs both back. left%/width% match Vector_8/Vector_9 in the SVG
+   exactly, so the seam between string and ring is invisible. */
+.logo-string {
+  position: absolute; top: 0; z-index: 0;
+  width: 6.25%; height: 0;
+  pointer-events: none;
+}
+.logo-string--a { left: 57.61%; background: var(--gold); }
+.logo-string--b { left: 37.5%; background: var(--accent); }
+
+/* Just the ring/stem graphic — not the "avid"/"omhoff" text — is the draggable part.
+   height: auto keeps it at its true, undistorted proportions (no more stretching); dragging
+   moves it down with a transform instead of resizing it, see main.js. */
+.logo-drag {
+  position: relative; z-index: 1;
+  display: block;
+  width: 100%; height: auto;
+  cursor: grab;
+  touch-action: none;   /* a touch-drag pulls the logo, not the page, while dragging */
+  -webkit-user-select: none; user-select: none; /* dragging shouldn't select nearby text */
+}
+/* Class added/removed by the pointer handlers in main.js while a drag is in progress */
+.logo-drag--dragging { cursor: grabbing; }
+.brand-name { position: absolute; inset: 0; margin: 0; pointer-events: none; } /* lets drags pass through to .logo-drag underneath instead of hitting this invisible box */
+.name-avid, .name-omhoff {
+  position: absolute;
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1;
+  font-size: clamp(2.75rem, 8vw, 6.25rem);
+  white-space: nowrap;
+}
+.name-avid { left: 67%; top: 34%; color: var(--gold); }
+.name-omhoff { left: 79%; top: 55%; color: var(--accent); }
+
+/* Speech-bubble callout: bubble image as the background shape, text padded to sit inside it.
+   margin-top adds .hero's removed top padding back — the logo is the only thing that skips it. */
+.hero-tagline {
+  position: relative;
+  margin: var(--top-gap) 0 0;
+  flex: 1 1 260px;
+  max-width: 460px;
+}
+.hero-tagline img { width: 100%; height: auto; }
+.hero-tagline span {
+  position: absolute;
+  top: 20%; left: 16%; width: 70%;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(.85rem, 1.6vw, 1.4rem);
+  color: var(--ink);
+}
+
+/* Decorative fox shape — sits behind the text/buttons (z-index 0), so it never blocks a click or tab stop.
+   top: adds --top-gap back in (see .hero), so this stays exactly where it was before the logo got pinned. */
+.hero-illustration {
+  position: absolute; z-index: 0;
+  top: calc(var(--top-gap) + clamp(60px, 10vw, 130px)); right: clamp(-40px, -4vw, 0px);
+  width: clamp(220px, 34vw, 460px);
+  pointer-events: none;
+}
+.hero-illustration img { width: 100%; height: auto; }
+
+.hero-cta {
+  position: relative; z-index: 1;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.4rem, 4vw, 3rem);
+  margin: calc(var(--top-gap) + var(--space-4)) 0 var(--space-3);
+}
+
+/* Below ~700px the desktop composition gets too tight: the name text and the fox
+   illustration start overlapping. Shrink the lockup and move the fox out of the way. */
+@media (max-width: 820px) {
+  .hero-top { flex-direction: column; } /* stack the name lockup and the speech bubble instead of sitting them side by side */
+  .brand-lockup { width: 130px; }
+  .hero-tagline { max-width: 340px; }
+  .name-avid, .name-omhoff { font-size: 2.1rem; }
+  .name-avid { top: 30%; }
+  .name-omhoff { top: 52%; }
+  .hero-illustration {
+    top: auto; bottom: clamp(-30px, -8vw, 0px); right: -10vw;
+    width: clamp(160px, 45vw, 260px);
+  }
+}
+
+/* ---------- Site nav (matches Figma: centered, near the top, on every page) ---------- */
+.site-nav {
+  position: relative; z-index: 1;
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: clamp(10px, 2vw, 21px);
+  margin-top: clamp(12px, 2vw, 33px);
+}
+/* On pages with the pinned-to-true-top logo, the nav needs to float independently instead
+   of pushing that logo down the page — same visual result (centered, near the top),
+   without disturbing .hero/.graphic-hero/.ux-hero's own flow. */
+.hero > .site-nav, .graphic-hero > .site-nav, .ux-hero > .site-nav {
+  position: absolute; z-index: 2;
+  top: clamp(12px, 2vw, 33px); left: 0; right: 0;
+  margin-top: 0;
+  padding: 0 clamp(20px, 4vw, 35px);
+}
+/* The navbar wraps onto 2 rows below ~600px, which is taller than the top strip it floats
+   in on desktop — floating it there would overlap the logo instead of sitting above it.
+   (Figma doesn't have a mobile navbar layout yet to match here.) Falling back to normal
+   document flow here, so it just pushes the logo down instead of covering it. This rule
+   has to come after the absolute one above — same selector, later wins. */
+@media (max-width: 820px) {
+  .hero > .site-nav, .graphic-hero > .site-nav, .ux-hero > .site-nav {
+    position: static;
+    padding: 0;
+    margin: 0 0 var(--space-3);
+  }
+}
+.nav-btn {
+  display: flex; align-items: center; justify-content: center;
+  width: clamp(96px, 13vw, 200px);
+  height: clamp(40px, 4.5vw, 50px);
+  border-radius: 30px;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(1rem, 2.2vw, 2.5rem); /* 40px at full size, from Figma */
+  color: var(--ink);
+  text-decoration: none;
+  background: var(--accent);
+}
+.nav-btn--home { background: var(--accent); }
+.nav-btn--gdes { background: var(--graphic); }
+.nav-btn--ux { background: var(--ux); }
+.nav-btn--arcade { background: var(--casino); }
+.nav-btn--about { background: transparent; border: 5px solid var(--gold); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .nav-btn { transition: transform .2s; }
+  .nav-btn--about { transition: background .3s; }
+  .nav-btn:not(.nav-btn--about):hover { transform: scale(1.15); z-index: 1; }
+  .nav-btn--about:hover { background: var(--gold); }
+}
+
+/* ---------- Homepage: three big buttons ---------- */
+.mode-buttons { position: relative; z-index: 1; display: flex; gap: var(--space-4); flex-wrap: wrap; } /* 40px in Figma — was --space-2 (16px), too tight */
+.mode-btn {
+  flex: 1 1 200px;
+  padding: var(--space-2) var(--space-3);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1rem, 1.6vw, 1.4rem);
+  color: var(--ink);
+  background: var(--panel);
+  border: none;
+  border-radius: 32px;
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+}
+.mode-btn:hover { transform: translateY(-3px); }
+.mode-btn--graphic { background: var(--graphic); }
+.mode-btn--ux { background: var(--ux); }
+.mode-btn--casino { background: var(--casino); }
+
+/* ---------- Homepage: scrolling gallery ---------- */
+/* Full-width tan "pedestal" band behind the gallery strip, matching the Figma Home frame */
+.gallery-shelf { background: var(--tan); padding: var(--space-4) 0; }
+.gallery-viewport { overflow: hidden; }
+.gallery-track { display: flex; gap: var(--space-3); width: max-content; }
+.gallery-track img {
+  height: 220px; width: auto; border-radius: 8px;
+  transition: opacity .3s;
+}
+.gallery-track img.hidden-item { opacity: .15; } /* dimmed when a button hover filters it out */
+
+@media (prefers-reduced-motion: no-preference) {
+  .gallery-track { animation: scroll 40s linear infinite; }
+  .gallery-viewport:hover .gallery-track { animation-play-state: paused; }
+}
+@keyframes scroll { to { transform: translateX(-50%); } }
+/* main.js duplicates the images once so -50% loops seamlessly */
+
+/* ---------- UX page (matches Figma "UI" frame) ---------- */
+.ux-page { background: var(--paper); margin: 0; }
+.ux-hero { position: relative; padding: 0 clamp(20px, 4vw, 35px) clamp(20px, 4vw, 35px); } /* no top padding — logo pinned flush to page top */
+
+.phone-gallery {
+  display: flex; flex-wrap: wrap;
+  justify-content: center; align-items: flex-end;
+  gap: var(--space-4);
+  padding: var(--space-3) 0 var(--space-5);
+}
+.phone-card {
+  position: relative;
+  width: clamp(180px, 22vw, 310px);
+  margin: 0; text-align: center;
+  transition: transform .25s ease;
+}
+.phone-card:hover, .phone-card:focus-within { transform: translateY(-8px); }
+.phone-card--raised { margin-bottom: var(--space-4); } /* "by hand" sits higher than its neighbors in Figma */
+.phone-pedestal {
+  position: absolute; z-index: 0;
+  left: 8%; right: 8%; bottom: -20px; height: 55%;
+  background: var(--ux); border-radius: 24px;
+}
+.phone-screen {
+  position: relative; z-index: 1;
+  width: 100%; border-radius: 28px;
+  box-shadow: 0 20px 44px rgba(0, 0, 0, .4);
+}
+.phone-name {
+  position: relative; z-index: 1;
+  margin: var(--space-2) 0 0;
+  font-family: var(--font-display); font-weight: 600;
+  color: var(--ink);
+}
+
+@media (max-width: 700px) {
+  .phone-gallery { flex-direction: column; align-items: center; }
+  .phone-card, .phone-card--raised { width: min(280px, 80vw); margin-bottom: 0; }
+}
+
+/* ---------- Graphic page (matches Figma "Graphic" frame) ---------- */
+.graphic-page { background: var(--graphic); margin: 0; }
+.graphic-hero {
+  position: relative;
+  padding: 0 clamp(20px, 4vw, 35px) clamp(20px, 4vw, 35px); /* no top padding — logo pinned flush to page top */
+}
+.graphic-illustration { display: none; } /* shown again on desktop below */
+
+.graphic-body { padding-bottom: var(--space-5); }
+.graphic-list { list-style: none; margin: var(--space-4) 0 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-4); max-width: 800px; }
+.graphic-item { display: flex; gap: var(--space-3); align-items: flex-start; }
+.dropcap { width: clamp(64px, 8vw, 122px); height: auto; border-radius: 6px; flex-shrink: 0; }
+.graphic-copy h2 {
+  margin: 0 0 var(--space-1);
+  font-family: var(--font-display); font-weight: 600;
+  font-size: clamp(1.6rem, 4vw, 3.125rem);
+  color: var(--ink);
+}
+.graphic-copy p {
+  margin: 0;
+  font-family: var(--font-body); font-weight: 600;
+  font-size: clamp(1rem, 1.8vw, 1.6rem);
+  line-height: 1.4;
+  color: var(--ink);
+}
+.hl-blue { color: #6EB5FF; }
+.hl-pink { color: #B35398; }
+.hl-mint { color: #06FFA4; }
+.hl-orange { color: #FF530E; }
+
+/* Desktop only: dark header band + wolf illustration, matching the Figma desktop frame
+   (the tablet/mobile Figma frames drop both and put the logo straight on the purple background) */
+@media (min-width: 900px) {
+  .graphic-hero { background: var(--paper); overflow: hidden; padding-bottom: var(--space-5); }
+  .graphic-illustration {
+    display: block; position: absolute; z-index: 0; pointer-events: none;
+    top: clamp(20px, 4vw, 40px); right: clamp(20px, 6vw, 90px);
+    width: clamp(220px, 26vw, 442px);
+  }
+  .graphic-illustration img { width: 100%; height: auto; }
+}
+
+/* ---------- Arcade page ---------- */
+.arcade-room { background: #12131C; color: #EDEAE0; min-height: 100vh; position: relative; }
+.arcade-room::after {  /* scanlines over everything */
+  content: ""; position: fixed; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(0,0,0,.18) 0 1px, transparent 1px 3px);
+}
+.neon-sign { font-family: var(--font-display); font-size: 3rem; color: #F2B747; text-shadow: 0 0 16px currentColor; }
+@media (prefers-reduced-motion: no-preference) {
+  .neon-sign .dying { animation: flicker 4s steps(1) infinite; }
+}
+@keyframes flicker {
+  0%, 7%, 10%, 100% { opacity: 1; text-shadow: 0 0 12px currentColor; }
+  8%, 9%, 54%, 56%  { opacity: .15; text-shadow: none; }
+}
+.cabinet { position: relative; }
+.cabinet--broken { filter: grayscale(.8) brightness(.7); }
+.cabinet--broken::before {
+  content: "OUT OF ORDER";
+  position: absolute; top: 40%; left: -5%; right: -5%; z-index: 2;
+  background: repeating-linear-gradient(45deg, #F2B747 0 20px, #12131C 20px 40px);
+  color: #12131C; font-weight: bold; text-align: center; padding: 8px;
+  transform: rotate(-6deg);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+  .mode-buttons { flex-direction: column; }
+  .phone { width: 220px; }
+  .float-icon { position: static; width: 48px; display: inline-block; }
+}
+
+/* ============================================================
+   HOLDING PAGE ONLY (live branch). Temporary page shown at davybomb.com
+   while the real site is built on main. Reuses the homepage hero above.
+   ============================================================ */
+.holding .hero { min-height: 100vh; min-height: 100svh; }   /* fill the screen; svh = the visible height on phones */
+.holding .mode-btn { display: block; text-align: center; text-decoration: none; } /* the pill buttons are links here, not <button>s */
+.holding-note { position: relative; z-index: 1; margin: var(--space-4) 0 0; font-size: 1rem; opacity: .75; }
+/* On phones the buttons stack in a column, where "flex: 1 1 200px" turns into a 200px HEIGHT
+   (flex-basis follows the stacking direction). Let each button size to its text instead.
+   Same bug exists on main's homepage, flagged to fix there. */
+@media (max-width: 820px) { .holding .mode-btn { flex: 0 0 auto; } }
